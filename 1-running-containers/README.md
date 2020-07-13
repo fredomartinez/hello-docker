@@ -1,178 +1,172 @@
 # Docker Containers
 
-## Hello-World
+## Hola mundo
 
-The most fundamental part of `Docker` are *containers*. There's a lot to say about them, but let's just run one:
+La parte más importante de `Docker` son los *contenedores*. Hay mucho para decir sobre ellos, pero vamos a correr uno:
 
 ```
-$ docker container run hello-world
+$ docker run hello-world
 
 Hello from Docker!
 This message shows that your installation appears to be working correctly.
 ```
 
-Easy, right? Let's take a look at what has just happened behind the scenes...
+Facil, ¿No? Vamos a echarle un vistazo a que acaba de pasar detrás de escena...
 
- 1. The **Docker client** contacted the **Docker daemon**.
- 2. The **Docker daemon** pulled the "hello-world" image from the **Docker Hub**.
- 3. The **Docker daemon** created a new **container** from that image which runs the
-    executable that produces the output you are currently reading.
- 4. The **Docker daemon** streamed that output to the **Docker client**, which sent it
-    to your terminal.
-
-
-> Whoa!! So this means that the whole **Docker Platform** is correctly setup and working.
+ 1. El **Docker client** conectó al **Docker daemon**.
+ 2. El **Docker daemon** descargó la imagen "hello-world" de **Docker Hub**.
+ 3. El **Docker daemon** creó un nuevo **contenedor** de esa imagen que corrió el ejecutable
+    que imprimió este texto.
+ 4. El **Docker daemon** envió el texto al **Docker client**, y este a tu terminal.
 
 
-Now lets start exploring and check the container 
+> Whoa!! Esto signigica que **Docker** está correctamente instalado y corriendo.
+
+Ahora empecemos a explorar el contenedor
 
 ```
 $ docker container ps
 ```
 
-🤔 not there... Let's add the `-a` flag
+🤔 Nada... Agreguemos la flag `-a`
 
 ```
 $ docker container ps -a
 ```
 
-😀 there you are! The -a option list not only the `running` containers but also the containers that have been finished.  This might become handy if you want to examine them.
+😀 Y ahí está! La opción -a lista no solo los contenedores en estado `running`, también los que han finalizado. Esto puede ser útil si quisieras examinarlos.
 
 
+## Corriendo un contenedor
 
-## Running a Container
+Ahora vamos un poco más allá. Vamos a correr un contenedor de Ubuntu:
 
-Now let's get serious. Let's run a full-fledged Ubuntu container:
-
-First we are going to pull a *specific* Ubuntu docker image from the registry.
+Primero vamos a descargar la imagen de docker de Ubuntu del registro de imagenes.
 
 ```
 $ docker pull ubuntu:14.04
 ```
 
-🤔 it looks like it downloaded something, but not sure what...
+🤔 Parece que está descargando algo, pero qué es?...
 
 ```
 $ docker images
 ```
 
-As you can see, now we have the ubuntu:14.04 image in our host and we can create our container.
-
+Como puedes ver, ahora tenemos una imagen de Ubuntu:14.04 en nuestra máquina y podemos crear nuestro contenedor.
 
 ```
 $ docker container run -it ubuntu:14.04
 ```
 
-Cool, we're inside the container! `-it` specifies you want to go into the interactive mode (TBH, `i` is interactive and `t` is for docker to allocate a pseudo TTY interface for the interaction)
+Bien, ahora estamos adentro del contenedor! La opción `-it` indica que el contenedor se correrá en modo interactivo. (Es decir, `i` es intectactivo y `t` es para generar una pseudo interface TTY para la interacción)
 
-Can you guess What will happen if you delete the any important file inside the container? (e.g. :warning: delete the "ls" binary... )
+¿Podrías decir que pasa si borramos algun archivo importante adentro del contenedor? (Por ejemplo: :warning: borrar el binario de "ls")
 
-After toying around just `exit`. 
-
-
-> :bulb: **Remember:** What happen in a container, stays in a container.
+Después de hacerlo, salimos del contenedor escribiendo `exit`.
 
 
+> :bulb: **Recuerda:** Lo que pasa en el contenedor, queda en el contenedor.
 
-So the way containers work is that there is one single main process that gets assigned `pid 1`, which runs as the containers starts, and as soon as that process exits, the container is stopped, even if there were other processes running inside of it.
+Te has dado cuenta que la primera vez que ejecutaste `docker run ubuntu:14.04` tomó un tiempo, pero la segunda vez fue inmediato. Lo que pasó es que Docker intentó correr la imagen `ubuntu:14.04`, pero no se encontraba localmente, por lo que se descargó de un repositorio público.
 
-You may also have noticed that the first time you ran `docker run ubuntu:14.04` it took a while, but the second time it was immediate. What really happened is that docker tried to run a container based on the `ubuntu:14.04` image, and since it didn't have it locally, it pulled it from the public repository. 
+## Corriendo contenedores
 
-
-## Running, detaching and attaching to containers
-
-Let's run a mongo database! And with a cute name.
+Vamos a levantar una base de datos Mongo!
 
 ```
 $ docker run --name db mongo
 ```
 
-🤔 but I don't want to be attached to the output... Just CTRL+c to quit and let's remove that container.
+🤔 Pero no quiero estar ligado al output... Apretamos CTRL+C para salir y remover el contenedor.
 
 ```
 $ docker rm db
 ```
 
-Now let's run a new mongo container, but in the background with the `-d` flag (`d` as in `detach`).
+Ahora corramos un nuevo contenedor de Mongo, pero en modo background con la flag `-d` (`detach`).
 
 ```
 $ docker run --name db -d mongo
 ```
 
-Now let's check out the mongo database. First you need to sort-of-`ssh` into the container. You don't actually use `ssh`, instead you can _execute_ a command with the interactive mode, like so:
+Ahora examinemos esta base de datos. Lo primero que tenemos que hacer entrar al contenedor con algo similar a `ssh`. Podemos _ejecutar_ un comando en modo interactivo:
+
 
 ```
 $ docker exec -it db mongo
 ```
 
-Now you're running the `mongo` command in the `db` container. Toy around and then CTRL+c to quit.
-
-If you now do `docker ps` you'll notice the `db` container is still running. It didn't stop because the main process, the `mongo` database process (with `pid 1`), is still running. The process you killed by quitting was just the mongo shell.
+Este comando de docker, ejecuta el comando `mongo` en el contenedor `db`. Para salir apretamos CTRL+C para salir.
 
 
-## Exposing containers
+Si ahora ejecutamos `docker ps` veremos que el contenedor `db` todavía está corriendo. No ha parado porque el proceso principal `db` todavía sigue corriendo.
+El proceso que acabamos de parar fue solo el del shell de mongo.
 
-Now let's run a web app in _another_ container.
+
+## Exponiendo contenedores
+
+Ahora corramos una aplicación web en _otro_ contenedor.
 
 ```
 $ docker container run --name webapp -d -P seqvence/static-site
 ```
 
-The -P command is basically making docker to automatically bind the internal port that the container is exposing to some available port in your host.
+La opción `-P` basicamente indica a Docker que asigne automaticamente el puerto interno que el contenedor expone a un puerto disponible en tu máquina.
+Veamos si la aplicación está corriendo y a qué puerto está expuesto.
 
-So, lets check if the app is running and which ports is exposing.
 
 ```
 $ docker container ps
 ```
 
-As you can see under `PORTS`, it seems the app *is* listening in port 80, but... 😮 Of course! That's just the container's _internal_ port! 
+Como puedes ver en `PORTS`, parece que la app está corriendo en el puerto 80, pero... 😮 Espera! Es solo el puerto _interno_ del contenedor.
 
-By passing the `-P` parameter to the docker run command, docker has automatically binded an external port to expose the service. 
+Intenta conectarte en un browser a \\localhost:{->puerto}
 
-Check the outcome of the command and try to connect via browser to \\localhost:{->binded port}
-
-
-Congratulations! You now have a web app runing inside a container and being exposed externally so users can enjoy it. 😎 🐳
+¡Felicitaciones! Ahora tenés una aplicación web corriendo adentro de un contenedor y siendo expuesto para que los usuarios puedan usarlo 😎 🐳.
 
 
 ## Docker Logs
 
-One of the benefits from docker is that they provide some standard interface for operating applications inside containers.  So lets check how to see the logs of an app running inside a cointainer.
 
-> To be able to see the logs, the app inside the container should be sending the logs to  STDOUT and STDERR
+Uno de los beneficios de Docker es que ofrece una interface estándar para operar las aplicaciones adentro de los contenedores. 
+Veamos como podemos ver los logs de nuestra aplicación web adentro del contenedor.
 
-So, first lets start a container in background.
+> Nota: para poder ver los logs, la aplicación andetro del contenedor debe enviar sus logs a STDOUT y STDERR
+
 
 ```
 $ docker logs webapp
 ```
 
-## Cleaning up containers
+## Borrando contenedores
 
-OK,  we know how to start multiple containers so now its time to stop them. 
+OK, sabemos como arrancar contenedores, ahora veamos como pararlos.
 
-First, check which containers are running with 
+Primero, veamos que contenedores están corriendo:
 
 ```
 $ docker container ps
 ```
 
-Now to stop a container you can do any of the following. 
+Ahora lo paremos de la siguiente manera:
 
 ``` 
 $ docker container stop {container id | container name}
 ```
 
-Great! This command has stopped the containers from running but we still have the containers files in the host. If you want a complete cleanup and remove everything, you should go further and execute the following:
+Genial! Este comando paró el contenedor pero todavía tenemos archivos del contenedor en el host. Si quisieras hacer una limpieza completa y borrar todos, tendrias que ejecutar el siguiente comando:
 
 ``` 
 $ docker container prune
 ```
-The `prune` command will delete all containers so if you check with `docker container ps -a` you will see that there are no more containers on your host.
+El comando `prune` borrará todo los contenedores que no estén corriendo. Lo podrías chequear con el comando `docker container ps -a`, verás que no hay más contenedores en tu máquina.
+
 
 #### Bonus :trollface: :trollface: :trollface:
-If you need to look like a **hollywood hacker** with `Docker` you can just run the following command:
+
+Si quisieras verte como un **hacker de Hollywood** con `Docker`, lo podrías hacer con el siguiente comando:
 
 ```
 $ docker container run -it jturpin/hollywood hollywood
@@ -180,5 +174,4 @@ $ docker container run -it jturpin/hollywood hollywood
 :grimacing:
 
 
-
-So, That's a wrap for the basics. :bowtie: Let's [move on to the next section](https://github.com/bitlogic/hello-docker/tree/master/2-building-images). :punch:
+Eso fue una introducción de Docker :bowtie:. Vayamos a la [siguiente sección](https://github.com/bitlogic/hello-docker/tree/master/2-building-images). :punch:

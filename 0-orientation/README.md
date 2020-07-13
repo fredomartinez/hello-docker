@@ -2,7 +2,7 @@
 
 ## Una breve introducción a los contenedores
 
-Una imagen en Docker, es una plantilla con todo lo necesario para correr una aplicación; incluyendo los binarios, las librerías necesarias, variables de entorno y archivos de configuración.
+Una imagen en Docker, es una plantilla con todo lo necesario para correr una aplicación; incluyendo los binarios, sus librerías, variables de entorno y archivos de configuración.
 
 Un contenedor es una instancia de una imagen corriendo en memoria. Por defecto se ejecuta completamente isolado del entorno, solo pudiendo acceder a los archivos y puertos si es que es configurado.
 
@@ -22,13 +22,13 @@ Los contenedores pueden compartir recursos del propio sistema operativo donde se
 
 ## Docker
 
-Docker es una plataforma para desarrollar, transportar y correr aplicaciones. Docker permite separar tus aplicaciones de tu infraestructura, por lo que podrás entregar software rapidamente. 
+Docker es una plataforma para desarrollar, transportar y correr aplicaciones. Permite separar tus aplicaciones de tu infraestructura, por lo que podrás entregar software rapidamente. 
 
-Docker ofrece un set de herramientas y aplicacione para manjear el ciclo de vida de tus contenedores
+Docker ofrece un set de herramientas y aplicacione para manejar el ciclo de vida de tus contenedores
 
 
 ![Docker Platform](./docker-platform.png) 
 
 En la siguiente sección vamos explorar la mayoría de estas herramientas haciendo foco en el uso diario de Docker.
 
-Ya estamos listos! Eso fue solo una introducción, así que [vamos a la siguiente sección](https://github.com/bitlogic/hello-docker/tree/master/1-running-containers)
+Ya estamos listos! Eso fue solo una introducción, así que [vamos a la siguiente sección](https://github.com/fredomartinez/hello-docker/tree/master/1-running-containers).
