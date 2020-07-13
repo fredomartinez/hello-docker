@@ -1,36 +1,34 @@
-# Introduction
+# Introducción
 
-## A brief explanation of containers
-An image is a lightweight, stand-alone, executable package that includes everything needed to run a piece of software, including the code, a runtime, libraries, environment variables, and config files.
+## Una breve introducción a los contenedores
 
-A container is a runtime instance of an image—what the image becomes in memory when actually executed. It runs completely isolated from the host environment by default, only accessing host files and ports if configured to do so.
+Una imagen en Docker, es una plantilla con todo lo necesario para correr una aplicación; incluyendo los binarios, las librerías necesarias, variables de entorno y archivos de configuración.
 
-Containers run apps natively on the host machine’s kernel. They have better performance characteristics than virtual machines that only get virtual access to host resources through a hypervisor. Containers can get native access, each one running in a discrete process, taking no more memory than any other executable.
+Un contenedor es una instancia de una imagen corriendo en memoria. Por defecto se ejecuta completamente isolado del entorno, solo pudiendo acceder a los archivos y puertos si es que es configurado.
 
+Los contenedores corren aplicaciones nativamente en el kernel del host. Tienen mejor rendimiendo que las máquinas virtuales que solo tienen acceso virtual a los recursos del host mediante el hypervisor. Los contenedores pueden tener acceso nativo, cada uno uno corriendo en un proceso discreto, sin consumir más memoria que otro ejecutable.
 
-## Containers vs. virtual machines
+## Contenedores vs. maquinas virtuales
 
-Consider this diagram comparing virtual machines to containers:
-
+Veamos este diagrama comparando máquinas virtuales con contenedores:
 
 ![VM vs Containers](./vm-containers.png) 
 
 
+Una máquina virtual es un sistema operativo completo funcionando de manera aislada en otro sistema operativo. Esta tecnología permite compartir hardware de modo que lo puedan usar varios sistemas operativos al mismo tiempo. Esto requiere muchos recursos, la imagen de disco y el estado de aplicación resultantes es un enredo de configuraciones del sistema operativo, dependencias instaladas, parches de seguridad y otras efímeras facil de perder y dificil de replicar.
 
-Virtual machines run guest operating systems—note the OS layer in each box. This is resource intensive, and the resulting disk image and application state is an entanglement of OS settings, system-installed dependencies, OS security patches, and other easy-to-lose, hard-to-replicate ephemera.
-
-Containers can share a single kernel, and the only information that needs to be in a container image is the executable and its package dependencies, which never need to be installed on the host system. These processes run like native processes, and you can manage them individually by running commands like docker ps—just like you would run ps on Linux to see active processes. Finally, because they contain all their dependencies, there is no configuration entanglement; a containerized app “runs anywhere.”
-
-## Docker Platform
+Los contenedores pueden compartir recursos del propio sistema operativo donde se ejecutan. La única información que necesitan para correr es el ejecutable y sus dependencias, que no son instaladas en el sistema host. Estos contenedores corren como procesos nativos y se pueden manejar indivudualmente con comandos como docker ps, exactamente igual si corrieramos ps en Linux para ver los procesos activos.  Finalmente, como los contenedores ya contienen todas sus dependencias, una app dockerizada “corre en cualquier lado“.
 
 
-Docker is an  platform for developing, shipping, and running applications. Docker enables you to separate your applications from your infrastructure so you can deliver software quickly. With Docker, you can manage your infrastructure in the same ways you manage your applications. 
+## Docker
 
-Docker provides a set of tools and applications to manage the lifecycle of your containers:
+Docker es una plataforma para desarrollar, transportar y correr aplicaciones. Docker permite separar tus aplicaciones de tu infraestructura, por lo que podrás entregar software rapidamente. 
+
+Docker ofrece un set de herramientas y aplicacione para manjear el ciclo de vida de tus contenedores
+
 
 ![Docker Platform](./docker-platform.png) 
 
-On the next sections we are going to be eploring most of them mostly focused on the day to day use of docker.
+En la siguiente sección vamos explorar la mayoría de estas herramientas haciendo foco en el uso diario de Docker.
 
-
-We are all set!  That's a wrap for the orientation so let's [move on to the next section](https://github.com/bitlogic/hello-docker/tree/master/1-running-containers)
+Ya estamos listos! Eso fue solo una introducción, así que [vamos a la siguiente sección](https://github.com/bitlogic/hello-docker/tree/master/1-running-containers)
