@@ -1,46 +1,48 @@
 # Hello Docker 
 
-An entry level `docker tutorial` 🐳  for anyone who wants to learn how to use docker effectively in their day-to-day dev work. 
+Este es un ` tutorial de docker`  🐳 introductorio para cualquier persona que quiera aprender cómo usar Docker de manera efectiva en su trabajo de desarrollo diario.
 
-![Docker Small](./0-orientation/horizontal_small.png) 
-
-
-## Getting Started
-
-This **docker tutorial** attempts to drive you through the fundamentals and into some advanced topics like `docker services` and  `docker stacks` and `docker's swarm mode`. Just in case, you can also grab the [Docker Cheatsheet](https://github.com/bitlogic/hello-docker/tree/master/docker-cheatsheet.md)
+![Docker Small](./0-orientacion/horizontal_small.png) 
 
 
-So, let's get started in the [orientation section](https://github.com/bitlogic/hello-docker/tree/master/0-orientation). :punch:
+## Empecemos
+
+Este **tutorial de docker** intenta guiarlo a través de los fundamentos y a algunos temas avanzados como `docker services`, ` docker stacks` y `docker's swarm mode`. Por si acaso, también puedes tomar la [Docker Cheatsheet] (https://github.com/fredomartinez/hello-docker/tree/master/docker-cheatsheet.md)
+
+Entonces, comencemos en la [sección de orientación] (https://github.com/fredomartinez/hello-docker/tree/master/0-orientacion). :punch:
 
 
-### Pre Requisites
+### Pre requisitos
 
-To start with the tutorial you'll need to have `docker 17.06` or later installed in your machine.  So go ahead and [install the latest stable version here](https://docs.docker.com/engine/installation/)
 
-You can check the version with the following command.
+Para comenzar con el tutorial, necesitarás tener `docker 19.03` o posterior instalado en tu máquina. Así que adelante, [instala la última versión estable acá] (https://docs.docker.com/engine/installation/)
+
+
+Puedes ver que versión tienes con el siguiente comando:
 ``` 
 $ docker --version
-Docker version 17.06.1-ce, build 874a737
+Docker version 19.03.12-ce, build 48a66213fe
 ```
 
-> The steps provided here are going to asume that you install docker on your localhost but using [`play-with-docker`](http://play-with-docker.com) is a valid and probably recommended alternative.
+
+> Los pasos proporcionados acá supondrán que ya tienes instalado Docker en su máquina, pero también puedes usar [`play-with-docker`] (http://play-with-docker.com) es una alternativa válida y recomendada para aprender.
 
 
-## Contributing
+## Contribuciones
 
-This is a continuous work in progress; so feel free to propose changes and spread the word or just just contact us at [bitlogic](https://bitlogic.io)
+Esto es un trabajo que está constantemente en progreso, así que puedes proponer cambios y compartirlo al mundo, o también contactarnos en [bitlogic](https://bitlogic.io)
 
 
-## License
+## Licencia
 
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a>
 
-<br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+<br />Este tutorial está bajo la licencia <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
 
-This license allows you to:
+Esta licencia te permite:
 
-* Share — copy and redistribute the material in any medium or format
-* Adapt — remix, transform, and build upon the material
+* Compartirlo — copiar y redistribuir el material en cualquier medio o formato.
+* Adaptarlo — mezclar, transformar y construir sobre el material
 
-For any purpose, even commercially. The licensor cannot revoke these freedoms as long as you follow the license terms.
+Para cualquier propósito, incluso comercialmente. El licenciante no puede revocar estas libertades mientras siga los términos de la licencia.
 
