@@ -1,109 +1,118 @@
 # Docker swarm
 
-Docker's swarm mode allows you to go all serious about large scale, highly available docker environments. It basically lets you handle a cluster of machines as a single docker daemon, with automatic failover, container scheduling, routing and tons of other goodies.
+El modo Docker swarm te permite crear entornos de gran escala y disponibilidad. Basicamente te permite manejar las máquinas del cluster como un simple Docker 
+con conmutación por error automática, programación de contenedores, enrutamiento y muchas otras cosas.
 
-This last section will walk you through creating a simple swarm cluster and the basic concepts. Do be noted that understanding docker swarm in its fullest is *way* beyond the scope of this guide. In any case, let's cut to the chase, shall we.
-
-## Setup the Cluster
-
-### Get some nodes
-
-In order to have a docker swarm going, you'll need a machine cluster, for which you'll need machines. Quickest, coolest way is by using [`play-with-docker`](http://play-with-docker.com/) to try it online. If you'd rather try it locally, you'll need [`docker-machine`](https://docs.docker.com/machine/) and [`Virtualbox`](https://www.virtualbox.org/). If you're running `Docker for mac` or `Docker for windows` you probably already have it installed; `Linux` users should get `docker-machine` separately.
-
-The main difference is how long it'll take you to have the swarm ready. If you're just trying it out, the online route is probably what you want. If you'd like your swarm to be persistent or try some extra stuff you'll want to use the local approach (it may get resource intensive).
-
-For the sake of simplicity, in this section we are going to use the play with docker environment.
-
-Browse to [`play-with-docker`](http://play-with-docker.com/) and create three nodes with the "+ ADD NEW INSTANCE" button.
+En esta última sección crearemos un cluster swarm simple y veremos sus conceptos básicos. Tenga en cuenta que comprender **docker swarm** en su totalidad está más allá del alcance de esta guía. En cualquier caso, vamos al grano, ¿de acuerdo?
 
 
-### Start the master
+## Configurar el clúster
 
-Let's get this swarm started. Now choose which is going to be your manager node and execute the following command:
+### Conseguir algunos nodos
+
+Para tener un docker swarm, necesitarás un cluster, para lo cual necesitará máquinas. La forma más rápida y genial es usando [`play-with-docker`](http://play-with-docker.com/) to try it online. 
+También lo podrías probar localmente, pero necesitarás una [`docker-machine`](https://docs.docker.com/machine/) y [`Virtualbox`](https://www.virtualbox.org/).
+
+La principal diferencia es cuanto tiempo te tomará tener el swarm listo. Si solo lo está probando, la opción online es probablemente la mejor opción. Si querés que tu swarm sea persistente o pruebe algunas cosas adicionales, podrás ir por el enfoque local (puede requerir muchos recursos).
+
+Por simplicidad,  n esta sección vamos a utilizar `play-with-docker`.
+
+
+Vamos a [`play-with-docker`](http://play-with-docker.com/) y cramos tres nodos con el botón "+ ADD NEW INSTANCE".
+
+
+### Empezamos con el nodo master
+
+Arranquemos el swarm. Ahora elijamos cuál será su nodo administrador y ejecutamos el siguiente comando:
 
 ```
-$ docker swarm init --advertise-addr <manager node's ip>
+$ docker swarm init --advertise-addr <id nodo manager>
 
 Swarm initialized: current node (v51je0ntr6h0o92bbmvuka34o) is now a manager.
 
 To add a worker to this swarm, run the following command:
 
-    docker swarm join --token SWMTKN-1-03hh4r65g8urdusbqnlfeakp6fskg17frbb92kx1v86oa3mwsb-duninzcwphu4cvnzeh5vbmghe 10.0.203.3:2377
+    docker swarm join --token SWMTKN-1-03hh4r65g8urdusbqnlfeakp6fskg17frbb92kx1v86oa3mwsb-duninzcwphu4cvnzeh5vbmghe <ip-nodo-manager>:2377
 
 To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
 ```
 
-> This set the node's docker daemon to swarm mode and output the `swarm join` command you'll need for other nodes to join this swarm. Copy it to your clipboard; you'll need it soon.
+> Esto configura Docker en modo swarm y genera el comando `swarm join` que necesitará para que otros nodos se unan a este nodo. Cópialo en tu portapapeles; Lo necesitarás pronto.
 
+### Agregando los workers
 
-### Add the Workers
+Ahora hagamos que los otros nodos se unan al swarm: ejecute el comando que acaba de copiar en su portapapeles dentro de cada uno. 
 
-Now let's make both worker nodes join the swarm cluster: run the command you just copied into your clipboard inside each of the worker nodes 
 
 ```
 docker node ls
 ```
 
-You now have a 3-node working swarm cluster 😎
-
+Ahora tenemos tres nodos trabajando para el cluster 😎
 
 ## Swarming
 
-### Our first swarm service 
+### Nuestro primer servicio swarm
 
-We are going to start by creating a service:
+Vamos a empezar creando un servicio:
 
 ```
 $ docker service create --replicas 5 -p 80:80 --name web nginx:1.12
 ```
 
-Now lets check how have they have been scheduled
+Ahora veamos cómo han sido programados
+
 ```
 $ docker service ps web
 ```
 
-### Scaling Up and Scaling Down
+### Escalando nuestro servicio
 
-This is done via the docker service scale command. We currently have 5 containers running. Let us bump it up to 8 as shown below by executing the command on the manager node.
+
+Esto se realiza a través del comando docker `service scale`. Actualmente tenemos 5 contenedores funcionando. Vamos a subirlo a 8 como se muestra a continuación ejecutando el comando en el nodo del administrador.
 
 ```
 $ docker service scale web=8
 web scaled to 8
 ```
 
-Now lets check that we have the service scaled up
+Ahora veamos que tenemos el servicio escalado
 ```
 $ docker service ls
 ID                  NAME                MODE                REPLICAS            IMAGE     PORTS
 x7ag3q8hwxi0        web                 replicated          8/8                 nginx:1.12     *:80->80/tcp
 ```
 
-You can check in which nodes the containers are running with the `docker service ps` command.
+Puede verificar en qué nodos se ejecutan los contenedores con el comando `docker service ps`.
 
 
-### Inspecting Nodes
+### Inspeccionando los nodes
 
-You can inspect the nodes anytime via the docker node inspect command.
-For example if you are already on the node (for example manager) that you want to check, you can use the name self for the node.
+
+Puede inspeccionar los nodos en cualquier momento a través del comando `docker node inspect`.
+
+Por ejemplo, si ya estás en el nodo (por ejemplo, en el manager) que desea verificar, puede usar el nombre self para el nodo.
 
 ```
 $ docker node inspect --pretty self
 ```
 
-Or if you want to check up on the other nodes, give the node name. For e.g.
+Pero si quisieras verificar el estado de otros nodos, tendrás que pasarle el nombre del nodo. Por ejemplo:
 ```
 $ docker node inspect --pretty node2
 ```
 
-Another useful way to check what is running on each node is `docker node ps`. e.g.:
+Otra forma útil de verificar lo que se está ejecutando en cada nodo es `docker node ps`. p.ej.:
 
 ```
 $ docker node ps node2
 ```
 
-### Drain a Node
+### Un poco más sobre nodos
 
-If the node is ACTIVE, it is ready to accept tasks from the Master i.e. Manager. For e.g. we can see the list of nodes and their status by firing the following command on the manager node.
+Si un nodo está ACTIVO,
+
+Si un nodo está ACTIVO, está listo para aceptar tareas del nodo manager. Por ejemplo: Podemos ver la lista de nodos y su estado con el siguiente comando en el nodo administrador.
 
 ```
 $ docker node ls
@@ -116,36 +125,39 @@ wpwocg35s2umag99w8wqctqgc     node2               Ready               Active
 $
 ```
 
-As you can see that their AVAILABILITY is set to READY. When the node is active, it can receive new tasks:
-* during a service update to scale up
-* during a rolling update
-* when you set another node to Drain availability
-* when a task fails on another active node
 
-But sometimes, we have to bring the Node down for some maintenance reason. This meant by setting the Availability to Drain mode. Let us try that with one of our nodes.
-Lets asume that we want to stop node2 
+Como puedes ver, su disponibilidad (AVAILABILITY) está establecida en activo (Active). Cuando el nodo está activo, puede recibir nuevas tareas:
+
+* durante una actualización de servicio para escalarlo
+* durante una actualización continua (rolling update)
+* cuando una tarea falla en otro nodo
+
+
+Pero a veces, tenemos que desactivar un nodo por alguna razón de mantenimiento. Esto significaba establecer la disponibilidad en modo de drenaje. Probemos eso con uno de nuestros nodos.
+Supongamos que queremos detener el nodo 2
+
 
 ```
 $ docker node update --availability drain node2
 ```
 
-Now check how the node2 have been drained and all their containers have been moved to other nodes. 
+Ahora compruebe cómo se ha drenado el nodo2 y se han movido todos sus contenedores a otros nodos.
 
 ```
 $ docker service ps web
 ```
 
 
+### Actualizaciones continuas (rolling updates)
 
-### Rolling Updates
+Esto es sencillo. En caso de que tengas una imagen Docker actualizada para desplegar en los nodos, todo lo que necesitas hacer es activar un comando para actualizar el servicio.
 
-This is straight forward. In case you have an updated Docker image to roll out to the nodes, all you need to do is fire an service update command.
 
 ```
 $ docker service update --image nginx:1.13 web
 ```
 
-Now lets check the rolling update status of the service with `docker service ps`
+Ahora verifiquemos el estado de la actualización continua del servicio con `docker service ps`
 
 ```
 $ docker service ps web

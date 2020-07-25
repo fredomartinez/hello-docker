@@ -1,7 +1,10 @@
 version: "3.3"
 services:
+  # Solo tenemos un servicio que llamaremos "web"
   web:
+    # El nombre de la imagen que creamos en la anterior sección
     image: hello-docker
+    # En esta parte definimos la estrategia para correr los contenedores.
     deploy:
       replicas: 3
       resources:

@@ -1,22 +1,19 @@
 # Docker Stacks
 
-A stack is a group of interrelated services that share dependencies, and can be orchestrated and scaled together. A single stack is capable of defining and coordinating the functionality of an entire application (though very complex applications may want to use multiple stacks).
+Un stack es un grupo de servicios interrelacionados que comparten dependencias, y que pueden ser orquestados y escalados. Un simple stack es capaz de definir y coordinar la funcionalidad de una aplicación. (Aplicaciones más complejas pueden usar múltiples stacks).
 
+## Nuestro primer Stack
 
-## Our first Single Service Stack
-
-The way to define stacks is via a `docker-compose.yml` file. This file defines how Docker Stack  should behave in production.
-
-In the root of the project, you will find a `docker-compose.yml` file describing our first service. 
+La manera de definir stacks es con un archivo llamado `hello-service.yml`. Este archivo define como se debería comportar el stack en producción. 
 
 ```YAML
 version: "3.3"
 services:
-  # We only have one service so far that we will name "web"
+  # Solo tenemos un servicio que llamaremos "web"
   web:
-    # Image name should be the same that we created on previous section.
+    # El nombre de la imagen que creamos en la anterior sección
     image: hello-docker
-    # On this part we define the strategy for scheduling containers. 
+    # En esta parte definimos la estrategia para correr los contenedores.
     deploy:
       replicas: 3
       resources:
@@ -29,44 +26,47 @@ services:
       - "80:80"
     networks:
       - webnet
+
 networks:
   webnet:
 ```
 
-So, this `hello-service.yml` file tells `Docker` to do the following:
+Este archivo le indica a `Docker` que haga lo siguiente:
 
-* Use the image we created in previous section **hello-docker**
-* Run 3 instances of that image as a service called web, limiting each one to use, at most, 10% of the CPU (across all cores), and 50MB of RAM.
-* Immediately restart containers if one fails.
-* Map port 80 on the host to web’s port 80.
-* Instruct web’s containers to share port 80 via a load-balanced network called webnet. (Internally, the containers themselves will publish to web’s port 80 at an ephemeral port.)
-* Define the webnet network with the default settings (which is a load-balanced overlay network).
+* Usar la imagen que creamos en la sección anterior 
+* Correr tres instancias de esa imagen en un servicio llamado web, limitando a cada uno usar como máximo el 10% del CPU, y 50 MB de RAM
+* Reiniciar los contenedores inmediatamente si uno falla.
+* Asignar el puerto 80 del host al puerto 80 del servicio.
+* Instruir a los contenedores compartir el puerto 80 a través de la network llamada webnet
+* Definimos la network webnet con los valores por defecto
 
-Now let’s run it. Go to the `./4-docker-stacks` folder of the project and execute the following command: 
+Ahora levantemos el stack. Corriendo el siguiente comando:
 
 ```
 $ docker stack deploy -c hello-service.yml hello-service
 ```
 
-Our single service stack is running 3 container instances of our deployed image on one host. 
+Nuestro servicio está corriendo tres instancias de contenedores de nuestra imagen en un host.
 
-You can run `curl http://localhost` several times in a row, or go to that URL in your browser and hit refresh a few times. Either way, you’ll see the container ID change, demonstrating the load-balancing; with each request, one of the 5 replicas is chosen, in a round-robin fashion, to respond.
+Ahora podemos correr `curl http://localhost` muchas veces, o ir a esa URL en un navegador y recargar la página.
+Verás que el ID del contenedor cambia, es el load-balancer en acción; en cada solicitud, una de las 5 réplicas es elegída, en round-robin, para responder.
 
 Magic ✨🐳
 
+Bueno ahora borremos el **stack**
 
-Now lets delete the **stack** 
 ```
 $ docker stack rm hello-service
 ```
 
-## Multi-Service Stacks
+## Stacks multi-servicios
 
-Now lets gets real and deploy a multi service (container) stack. 
+Ahora hagamos algo real y deployemos un stack de mas de un servicio.
 
-We are going to add to the `hello-docker` service a visualizer and `redis` to persist the data. We should now be able to count the visitors of our service. ;-) 
+Vamos agregar a el servicio `hello-docker` un visualizador y un `redis` para persistir los datos. Ahora podremos contabilizar los visitantes de nuestro servicio ;-)
 
-In this same folder you will find the `hello-stack.yml' file with the following content.
+En esta carpeta encontrarás el archivo `hello-stack.yml` con el siguiente contenido:
+
 ```YAML
 version: "3"
 services:
@@ -108,9 +108,9 @@ networks:
   webnet:
 ```
 
-As you can see, we are adding 2 services `redis` and `visualizer` toghether with their policies and constraints.
+Como puedes ver, agregamos dos servicios`redis` y `visualizer`, cada uno con sus politicas y constraints.
 
-Let's start the stack and see what happen:
+Levantemos el stack y veamos que pasa:
 
 ```
 $ docker stack deploy -c hello-stack.yml hello
@@ -126,7 +126,7 @@ Magic ✨🐳
 $ docker service ls
 ```
 
-You should see something like the following:
+Verás algo como esto:
 ```
 ID                  NAME                MODE                REPLICAS            IMAGE                             PORTS
 i08fo6eilog8        hello_redis         replicated          1/1                 redis:latest                      *:6379->6379/tcp
@@ -134,32 +134,30 @@ nch7igvp6l16        hello_visualizer    replicated          1/1                 
 px5kj7d22t8x        hello_web           replicated          3/3                 hello-docker:latest               *:80->80/tcp
 ```
 
+Wujuu! Ahora tenemos un `stack` con tres servicios! El servicio `web` con 3 instancias corriendo y su carga es balanceada automáticamente por docker, el servicio `redis` que persiste los datos de los visitantes del sitio y el servicio `visualizer` para ver como los servicios están deployados.
 
-So now we have a `stack` with 3 services! A web service with 3 instances running and being load balanced automatically by docker, a `redis` service to persist the visitors to the site and the `visualizer` to see how are the service deployed. 
+> :shipit: Ahora puedes **visualizar** los servicios deployados conectándote al servicio `visualizer` yendo a [localhost:8080] 
 
-> :shipit: Now You can **visually** see the services deployed by connecting to the `visualizer` service browsing to [localhost:8080]
-
-> :shipit:  If you are a console nerd, try the following command (tested in MacOS) to check how the web service is load balanced and the visit history is persisted.
+> :shipit: Intentá correr el siguiente commando para chequear como la carga del servicio web es balanceada y como el historial de visitas es persistido.
 
 ```
 $ while sleep 1; do curl localhost && echo ""; done
 ```
 
-Now, Lets have a little more fun and scale the web service with the following command:
+Ahora, escalemos el servicio web con el siguiente comando:
+
 ```
 $ docker service scale hello_web=5
 ```
 
-Now stop a few containers and see what happen
+Ahora paremos algunos contenedores y veamos que pasa ✨
 ```
 $ docker stop [container id | name]
 ```
 
-You now have a multi-service resilient application running in a docker swarm ✨
-
-To stop the stack execute the following:
+Para borrar el stack ejecuta el siguiente comando:
 ```
 docker stack rm hello
 ```
 
-Now lets get serious and distribute the application in multiple nodes with [docker swarm](https://github.com/bitlogic/hello-docker/tree/master/5-docker-swarm).
+Ahora nos ponemos más serios, vamos a distribuir nuestra aplicación en multiples nodos con [docker swarm](https://github.com/bitlogic/hello-docker/tree/master/5-docker-swarm).
