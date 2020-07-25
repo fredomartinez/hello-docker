@@ -92,7 +92,6 @@ $ docker run --name db -d mongo
 
 Ahora examinemos esta base de datos. Lo primero que tenemos que hacer entrar al contenedor con algo similar a `ssh`. Podemos _ejecutar_ un comando en modo interactivo:
 
-
 ```
 $ docker exec -it db mongo
 ```

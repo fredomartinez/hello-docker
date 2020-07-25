@@ -1,39 +1,39 @@
 # Docker Cheatsheet
 
-
-### Running Containers
-
+### Imagenes
 ```
-docker --version                                    # Check the version of docker client
-docker run hello-world                      # If works it means that the platform is OK.
-docker container ps -a                          #list all running and stopped containers
-docker pull <image>                                         # Pull image from docker hub
-docker container run -it <image>    #Run image in interactive way (connected to the tty)
-docker container run -P -d <image>                      # -P to bind ports automatically
-docker container run -P -d <image>                             # -d to run in background
-docker container exec -it <container-name>              # connect to a running container
-docker logs <container-name>                      # See the logs of particular container
-docker container stop <container-name | id >                        # Stop the container
+docker images                                   # Lista todas las imagenes en tu máquina
+docker images -a                                         # Incluye las capas intermedias
+docker build -t <nombre-image>  <Path/toDockerfile>                # Contruir una imagen
+docker rmi                                           # Eliminar una imagen de tu máquina       
+docker rmi -f                                      # Forzar la eliminación de una imagen
 ```
 
-### Running Services
+
+### Contenedores
+
 ```
-docker stack ls                                                    # List stacks or apps
-docker stack deploy -c <composefile> <appname>          # Run the specified Compose file
-docker service ls                         # List running services associated with an app
-docker service ps <service>                          # List tasks associated with an app
-docker inspect <task or container>                           # Inspect task or container
-docker container ls -q                                              # List container IDs
-docker stack rm <appname>                                     # Tear down an application
-docker service logs <service>                         # See the logs for all the service
+docker --version                            # Chequear la versión de Docker en tu máquina
+docker run hello-world                                             # Correr un contenedor
+docker container ps                             # Listar todos los contenedores corriendo
+docker container ps -a                                    # Listar todos los contenedores
+docker pull <imagen>                                               # Descargar una imagen 
+docker container run -it <imagen>                 # Correr una imagen en modo interactivo
+docker container run -P -d <imagen>              # -P para bindear a un puerto disponible
+docker container run -P -d <imagem>                           # -d correrlo en background
+docker container exec -it <nombre-contenedor | id>           # conectarse a un contenedor
+docker logs <nombre-contenedor | id>                      # Ver los logs de un contenedor
+docker container stop <nombre-contenedor | id >                     # Parar un contenedor
+docker inspect <tarea o contenedor>              # Inspeccionar la tarea de un contenedor
+docker container ls -q                               # Listar las IDs de los contenedores
 ```
 
-### Building Images
+### Servicios
 ```
-docker images                                              # List all images on the host
-docker images -a                                           # Include intermediate layers
-docker build -t <image-name>  <Path-to-Dockerfile>      # Build an image from dockerfile
-docker rmi                                                  # Remove image from the host       
-docker rmi -f                                                   # Force removal of image
+docker stack ls                                                       # Listar los stacks
+docker stack deploy -c <composefile> <nombre-stack> #Correr un archivo compose específico
+docker service ls                                        # Listar los servicios corriendo
+docker service ps <servicio>                  # Listar las tareas asociadas a un servicio
+docker stack rm <nombre-stack>                                          # Borrar el stack
+docker service logs <servicio>                              # Ver los logs de un servicio
 ```
-
