@@ -12,7 +12,7 @@ Este **tutorial de docker** intentará guiarte a través de los fundamentos y a 
 Entonces, comencemos en la [sección de orientación](https://github.com/fredomartinez/hello-docker/tree/master/0-orientacion). :punch:
 
 
-### Pre requisitos
+### Pre-requisitos
 
 
 Para comenzar con el tutorial, necesitarás tener `docker 19.03` o posterior instalado en tu máquina. Así que adelante, [instala la última versión estable acá](https://docs.docker.com/engine/installation/)

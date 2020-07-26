@@ -11,7 +11,7 @@ Al escalar un servicio cambia el número de las instancias del contenedor corrie
 Por suerte esto es más fácil de definir, correr y escalar servicios con la plataforma de Docker.
 
 
-## Swarm Init 
+## Modo swarm 
 
 Para poder deployar servicios necesitamos inicializar un `cluster swarm`. Para hacer esto, ejecuta el siguiente comando:
 
@@ -56,7 +56,7 @@ Para chequear el estado de los contenedores corriendo podemos ejecutar el siguie
 docker service ps pinger
 ```
 
-Puedes ver en que nodo está corriendo. Ahora escalemos el servicio aumentando el número de replicas (cada réplica es un contenedor)
+Puedes ver en que nodo está corriendo. Ahora escalemos el servicio aumentando el número de réplicas (cada réplica es un contenedor)
 
 ```
 docker service scale pinger=5

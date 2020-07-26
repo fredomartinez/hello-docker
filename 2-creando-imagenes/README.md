@@ -96,7 +96,6 @@ $ curl http://localhost:[puerto]
 ```
 
 
-
 ## Echemos un vistazo a las capas
 
 Si ejecutas de nuevo el comando `docker build`, tomará mucho menos tiempo que la primera vez. Esto es porque Docker guarda en la caché cada capa y no es necesario volver a contruirlas si no ha cambiado nada desde la última vez que se creó.
