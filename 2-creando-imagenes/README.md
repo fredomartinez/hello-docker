@@ -47,7 +47,7 @@ FROM python
 WORKDIR /app
 
 # Copiamos el código de nuestra aplicación y sus dependencias en /app
-COPY . .
+COPY . /app
 
 # Instalamos los paquetes expecificados en requirements.txt
 RUN pip install -r requirements.txt

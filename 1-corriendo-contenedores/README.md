@@ -34,7 +34,7 @@ $ docker container ps
 $ docker container ps -a
 ```
 
-😀 Y ahí está! La opción -a lista no solo los contenedores en estado `running`, también los que han finalizado. Esto puede ser útil si quisieras examinarlos.
+😀 Y ahí está! La opción **-a** lista no solo los contenedores en estado `running`, también los que han finalizado. Esto puede ser útil si quisieras examinarlos.
 
 
 ## Corriendo un contenedor
@@ -173,4 +173,4 @@ $ docker container run -it jturpin/hollywood hollywood
 :grimacing:
 
 
-Eso fue una introducción de Docker :bowtie:. Vayamos a la [siguiente sección](https://github.com/bitlogic/hello-docker/tree/master/2-building-images). :punch:
+Eso fue una introducción de Docker :bowtie:. Vayamos a la [siguiente sección](https://github.com/fredomartinezm/hello-docker/tree/master/2-creando-imagenes). :punch:

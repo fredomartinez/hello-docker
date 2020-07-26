@@ -160,4 +160,4 @@ Para borrar el stack ejecuta el siguiente comando:
 docker stack rm hello
 ```
 
-Ahora nos ponemos más serios, vamos a distribuir nuestra aplicación en multiples nodos con [docker swarm](https://github.com/bitlogic/hello-docker/tree/master/5-docker-swarm).
+Ahora nos ponemos más serios, vamos a distribuir nuestra aplicación en multiples nodos con [docker swarm](https://github.com/fredomartinez/hello-docker/tree/master/5-docker-swarm).
