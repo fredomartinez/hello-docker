@@ -44,7 +44,7 @@ Ahora vamos un poco más allá. Vamos a correr un contenedor de Ubuntu:
 Primero vamos a descargar la imagen de docker de Ubuntu del registro de imagenes.
 
 ```
-$ docker pull ubuntu:14.04
+$ docker pull ubuntu:20.10
 ```
 
 🤔 Parece que está descargando algo, pero qué es?...
@@ -56,7 +56,7 @@ $ docker images
 Como puedes ver, ahora tenemos una imagen de Ubuntu:14.04 en nuestra máquina y podemos crear nuestro contenedor.
 
 ```
-$ docker container run -it ubuntu:14.04
+$ docker container run -it ubuntu:20.10
 ```
 
 Bien, ahora estamos adentro del contenedor! La opción `-it` indica que el contenedor se correrá en modo interactivo. (Es decir, `i` es intectactivo y `t` es para generar una pseudo interface TTY para la interacción)
