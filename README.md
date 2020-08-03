@@ -15,7 +15,7 @@ Entonces, comencemos en la [sección de orientación](https://github.com/fredoma
 ### Pre-requisitos
 
 
-Para comenzar con el tutorial, necesitarás tener `docker 19.03` o posterior instalado en tu máquina. Así que adelante, [instala la última versión estable acá](https://docs.docker.com/engine/installation/)
+Para comenzar con el tutorial, necesitarás tener `docker 19.03` o posterior instalado en tu máquina. Así que adelante, [instala la última versión estable acá](https://docs.docker.com/engine/installation/).
 
 
 Puedes ver que versión tienes con el siguiente comando:
