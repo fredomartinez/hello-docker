@@ -68,7 +68,7 @@ Después de hacerlo, salimos del contenedor escribiendo `exit`.
 
 > :bulb: **Recuerda:** Lo que pasa en el contenedor, queda en el contenedor.
 
-Te has dado cuenta que la primera vez que ejecutaste `docker run ubuntu:14.04` tomó un tiempo, pero la segunda vez fue inmediato. Lo que pasó es que Docker intentó correr la imagen `ubuntu:14.04`, pero no se encontraba localmente, por lo que se descargó de un repositorio público.
+Te has dado cuenta que la primera vez que ejecutaste `docker run ubuntu:20.10` tomó un tiempo, pero la segunda vez fue inmediato. Lo que pasó es que Docker intentó correr la imagen `ubuntu:20.10`, pero no se encontraba localmente, por lo que se descargó de un repositorio público.
 
 ## Corriendo contenedores
 
